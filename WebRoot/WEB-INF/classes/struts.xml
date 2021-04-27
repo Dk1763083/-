@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE struts PUBLIC
+    "-//Apache Software Foundation//DTD Struts Configuration 2.3//EN"
+    "http://struts.apache.org/dtds/struts-2.3.dtd">
+<struts>
+<!--拦截器 -->
+ <package name="Inter" extends="struts-default" >
+		<interceptors>
+			<interceptor name="Interceptor" class="com.dong.inter.Interceptor">
+				<param name="excludeMethods">QueryAllPro,Login,Regist</param>
+			</interceptor>
+			<interceptor-stack name="myStack">		
+				<interceptor-ref name="Interceptor"></interceptor-ref>
+				<interceptor-ref name="defaultStack"></interceptor-ref>
+			</interceptor-stack>
+		</interceptors>
+		<default-interceptor-ref name="myStack"></default-interceptor-ref>
+ </package>
+<!--1.CodeAction -->
+ <package name="securityCode" extends="struts-default" namespace="/securityCode">
+	<action name="securityCode_*" class="com.dong.action.CodeAction" method="{1}">
+	
+	</action>
+ </package>
+<!--2.UserAction-->
+ <package name="UserAction" extends="Inter" namespace="/UserAction">
+	<action name="UserAction_*" class="com.dong.action.UserAction" method="{1}">	 
+	  <result name="Login.jsp" type="redirect">/jsp/LoginView.jsp</result>
+	  <result name="Regist.jsp" type="redirect">/jsp/CreateUserView.jsp</result>
+	  <result name="UserManageView.jsp" type="redirect">/jsp/UserManageView.jsp</result>
+	  <result name="ChangeUserMessageSuccess.jsp" type="redirect">/jsp/ChangeUserMessageSuccess.jsp</result>
+	  <result name="ChangeUserPwdSuccess.jsp" type="redirect">/jsp/ChangePasswordSuccess.jsp</result>
+	  <result name="QueryAllPro" type="redirectAction">
+	      <param name="namespace">/ProductAction</param>
+	      <param name="actionName">ProductAction_QueryAllPro</param>
+	  </result>
+    </action>
+ </package>
+<!--3.ProductAction-->
+ <package name="ProductAction" extends="Inter" namespace="/ProductAction">
+	<action name="ProductAction_*" class="com.dong.action.ProductAction" method="{1}">
+	   <result name="ProView.jsp">/jsp/QueryProductView.jsp</result>
+	   <result name="Login.jsp">/jsp/LoginView.jsp</result>
+	   <result name="AddCarSuccess.jsp">/jsp/AddCarSuccess.jsp</result>
+	   <result name="ShopcarView.jsp">/jsp/ShopCarView.jsp</result>
+	   <result name="Shopcar" type="redirectAction">ProductAction_ShopCar</result>   
+	</action>
+	
+ </package>
+	
+	
+</struts>
